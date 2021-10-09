@@ -1,8 +1,13 @@
 import Axios from "axios";
 import { useState } from "react";
+import { withRouter } from "react-router-dom";
 import { Page } from "./Page";
 
-const CreatePost = () => {
+type CreatePostProps = {
+  history: { push: (path: string) => void };
+};
+
+const CreatePost = ({ history }: CreatePostProps) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -10,11 +15,13 @@ const CreatePost = () => {
     e.preventDefault();
 
     try {
-      await Axios.post("http://localhost:8080/create-post", {
+      const response = await Axios.post("http://localhost:8080/create-post", {
         title,
         body,
         token: localStorage.getItem("complexAppToken")
       });
+      // Redirect to new post url
+      history.push(`/post/${response.data}`);
       console.log("new post was created");
     } catch (e) {
       console.log("there was an error");
@@ -58,4 +65,4 @@ const CreatePost = () => {
   );
 };
 
-export { CreatePost };
+export default withRouter(CreatePost);
