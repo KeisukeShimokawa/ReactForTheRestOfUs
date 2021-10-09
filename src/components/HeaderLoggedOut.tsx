@@ -1,7 +1,11 @@
 import { useState } from "react";
 import Axios from "axios";
 
-const HeaderLoggedOut = () => {
+type HeaderLoggedOutProps = {
+  setLoggedIn: (loggedin: boolean) => void;
+};
+
+const HeaderLoggedOut = ({ setLoggedIn }: HeaderLoggedOutProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,6 +19,7 @@ const HeaderLoggedOut = () => {
       });
       if (response.data) {
         console.log(response.data);
+        setLoggedIn(true);
       } else {
         console.log("incorrect username / password");
       }
