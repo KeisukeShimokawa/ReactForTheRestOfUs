@@ -1,6 +1,27 @@
 import { Page } from "./Page";
+import Axios from "axios";
+import { useState } from "react";
 
 const HomeGuest = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await Axios.post("http://localhost:8080/register", {
+        username,
+        email,
+        password
+      });
+      console.log("User was successfully created.");
+    } catch (e) {
+      console.log("there was an error");
+    }
+  };
+
   return (
     <Page title="Home" wide={true}>
       <div className="row align-items-center">
@@ -14,7 +35,7 @@ const HomeGuest = () => {
           </p>
         </div>
         <div className="col-lg-5 pl-lg-5 pb-3 py-lg-5">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="username-register" className="text-muted mb-1">
                 <small>Username</small>
@@ -26,6 +47,9 @@ const HomeGuest = () => {
                 type="text"
                 placeholder="Pick a username"
                 autoComplete="off"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setUsername(e.target.value)
+                }
               />
             </div>
             <div className="form-group">
@@ -39,6 +63,9 @@ const HomeGuest = () => {
                 type="text"
                 placeholder="you@example.com"
                 autoComplete="off"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
               />
             </div>
             <div className="form-group">
@@ -51,6 +78,9 @@ const HomeGuest = () => {
                 className="form-control"
                 type="password"
                 placeholder="Create a password"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
               />
             </div>
             <button
