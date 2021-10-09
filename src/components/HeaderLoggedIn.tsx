@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type HeaderLoggedInProps = {
   setLoggedIn: (loggedIn: boolean) => void;
 };
@@ -26,9 +28,9 @@ const HeaderLoggedIn = ({ setLoggedIn }: HeaderLoggedInProps) => {
           alt="Logged In User Avator"
         />
       </a>
-      <a className="btn btn-sm btn-success mr-2" href="/create-post">
+      <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
-      </a>
+      </Link>
       <button onChange={handleLoggedOut} className="btn btn-sm btn-secondary">
         Sign Out
       </button>
