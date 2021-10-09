@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { HeaderLoggedOut } from "./HeaderLoggedOut";
 import { HeaderLoggedIn } from "./HeaderLoggedIn";
-import { useState } from "react";
 
-const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(
-    Boolean(localStorage.getItem("complexAppToken"))
-  );
+type HeaderProps = {
+  loggedIn: boolean;
+  setLoggedIn: (loggedIn: boolean) => void;
+};
 
+const Header = ({ loggedIn, setLoggedIn }: HeaderProps) => {
   return (
     <header className="header-bar bg-primary mb-3">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
