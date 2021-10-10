@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
 
@@ -15,26 +15,39 @@ import { FlashMessages } from "./components/FlashMessages";
 import { StateContext } from "./StateContext";
 import { DispatchContext } from "./DispatchContext";
 
+type User = {
+  token: string;
+  username: string;
+  avatar: string;
+};
+
 type STATE_TYPE = {
   loggedIn: boolean;
   flashMessages: string[];
+  user: User;
 };
 
 type ACTION_TYPE =
-  | { type: "login" }
+  | { type: "login"; data: User }
   | { type: "logout" }
   | { type: "flashMessages"; value: string };
 
 export default function App() {
   const initialState: STATE_TYPE = {
     loggedIn: Boolean(localStorage.getItem("complexAppToken")),
-    flashMessages: []
+    flashMessages: [],
+    user: {
+      token: localStorage.getItem("complexAppToken") as string,
+      username: localStorage.getItem("complexAppUsername") as string,
+      avatar: localStorage.getItem("complexAppAvatar") as string
+    }
   };
 
   const ourReducer = (draft: typeof initialState, action: ACTION_TYPE) => {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
+        draft.user = action.data;
         return;
       case "logout":
         draft.loggedIn = false;
@@ -46,6 +59,18 @@ export default function App() {
   };
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("complexAppToken", state.user.token);
+      localStorage.setItem("complexAppUsername", state.user.username);
+      localStorage.setItem("complexAppAvatar", state.user.avatar);
+    } else {
+      localStorage.removeItem("complexAppToken");
+      localStorage.removeItem("complexAppUsername");
+      localStorage.removeItem("complexAppAvatar");
+    }
+  }, [state.loggedIn]);
 
   return (
     <StateContext.Provider value={state}>

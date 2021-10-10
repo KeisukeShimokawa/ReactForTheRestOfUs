@@ -1,10 +1,17 @@
 import { createContext } from "react";
 
-type InitialState = {
-  loggedIn: boolean;
-  flashMessages: string[];
+type User = {
+  token: string;
+  username: string;
+  avatar: string;
 };
 
-const StateContext = createContext<InitialState>({} as InitialState);
+type STATE_TYPE = {
+  loggedIn: boolean;
+  flashMessages: string[];
+  user: User;
+};
+
+const StateContext = createContext<STATE_TYPE>({} as STATE_TYPE);
 
 export { StateContext };

@@ -1,15 +1,14 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DispatchContext } from "../DispatchContext";
+import { StateContext } from "../StateContext";
 
 const HeaderLoggedIn = () => {
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   const handleLoggedOut = () => {
     appDispatch({ type: "logout" });
-    localStorage.removeItem("complexAppToken");
-    localStorage.removeItem("complexAppUsername");
-    localStorage.removeItem("complexAppAvatar");
   };
 
   return (
@@ -24,7 +23,7 @@ const HeaderLoggedIn = () => {
       <a href="#" className="mr-2">
         <img
           className="small-header-avatar"
-          src={localStorage.getItem("complexAppAvatar") as string}
+          src={appState.user.avatar}
           alt="Logged In User Avator"
         />
       </a>

@@ -1,7 +1,13 @@
 import { createContext } from "react";
 
+type User = {
+  token: string;
+  username: string;
+  avatar: string;
+};
+
 type ACTION_TYPE =
-  | { type: "login" }
+  | { type: "login"; data: User }
   | { type: "logout" }
   | { type: "flashMessages"; value: string };
 
