@@ -14,6 +14,7 @@ import { ViewSinglePost } from "./components/ViewSinglePost";
 import { FlashMessages } from "./components/FlashMessages";
 import { StateContext } from "./StateContext";
 import { DispatchContext } from "./DispatchContext";
+import { Profile } from "./components/Profile";
 
 type User = {
   token: string;
@@ -79,6 +80,9 @@ export default function App() {
           <FlashMessages />
           <Header />
           <Switch>
+            <Route path="/profile/:username">
+              <Profile />
+            </Route>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
             </Route>
