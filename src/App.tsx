@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useImmerReducer } from "use-immer";
 
 // My Components
 import { Header } from "./components/Header";
@@ -14,29 +15,37 @@ import { FlashMessages } from "./components/FlashMessages";
 import { StateContext } from "./StateContext";
 import { DispatchContext } from "./DispatchContext";
 
+type STATE_TYPE = {
+  loggedIn: boolean;
+  flashMessages: string[];
+};
+
 type ACTION_TYPE =
   | { type: "login" }
   | { type: "logout" }
   | { type: "flashMessages"; value: string };
 
 export default function App() {
-  const initialState = {
+  const initialState: STATE_TYPE = {
     loggedIn: Boolean(localStorage.getItem("complexAppToken")),
     flashMessages: []
   };
 
-  const ourReducer = (state: typeof initialState, action: ACTION_TYPE) => {
+  const ourReducer = (draft: typeof initialState, action: ACTION_TYPE) => {
     switch (action.type) {
       case "login":
-        return { loggedIn: true, flashMessages: state.flashMessages };
+        draft.loggedIn = true;
+        return;
       case "logout":
-        return { loggedIn: false, flashMessages: state.flashMessages };
+        draft.loggedIn = false;
+        return;
       case "flashMessages":
-        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages };
+        draft.flashMessages.push(action.value);
+        return;
     }
   };
 
-  const [state, dispatch] = useReducer(ourReducer, initialState);
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
 
   return (
     <StateContext.Provider value={state}>
