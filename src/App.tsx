@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer, useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // My Components
@@ -13,7 +13,30 @@ import { ViewSinglePost } from "./components/ViewSinglePost";
 import { FlashMessages } from "./components/FlashMessages";
 import { ExampleContext } from "./components/ExampleContext";
 
+type ACTION_TYPE =
+  | { type: "login" }
+  | { type: "logout" }
+  | { type: "flashMessages"; value: string };
+
 export default function App() {
+  const initialState = {
+    loggedIn: Boolean(localStorage.getItem("complexAppToken")),
+    flashMessages: []
+  };
+
+  const ourReducer = (state: typeof initialState, action: ACTION_TYPE) => {
+    switch (action.type) {
+      case "login":
+        return { loggedIn: true, flashMessages: state.flashMessages };
+      case "logout":
+        return { loggedIn: false, flashMessages: state.flashMessages };
+      case "flashMessages":
+        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages };
+    }
+  };
+
+  const [state, dispatch] = useReducer(ourReducer, initialState);
+
   const [loggedIn, setLoggedIn] = useState(
     Boolean(localStorage.getItem("complexAppToken"))
   );
