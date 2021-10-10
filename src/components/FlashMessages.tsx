@@ -1,11 +1,12 @@
-type FlashMessagesProps = {
-  messages: string[];
-};
+import { useContext } from "react";
+import { StateContext } from "../StateContext";
 
-const FlashMessages = ({ messages }: FlashMessagesProps) => {
+const FlashMessages = () => {
+  const appState = useContext(StateContext);
+
   return (
     <div className="floating-alerts">
-      {messages.map((msg, index) => {
+      {appState.flashMessages.map((msg, index) => {
         return (
           <div
             key={index}
