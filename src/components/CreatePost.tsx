@@ -1,17 +1,19 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
+import { ExampleContext } from "./ExampleContext";
 import { Page } from "./Page";
 
 type CreatePostProps = {
   // addFlashMessages: (msg: string) => void;
-  addFlashMessages: any;
   history: { push: (path: string) => void };
 };
 
-const CreatePost = ({ addFlashMessages, history }: CreatePostProps) => {
+const CreatePost = ({ history }: CreatePostProps) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+
+  const ctx = useContext(ExampleContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const CreatePost = ({ addFlashMessages, history }: CreatePostProps) => {
         body,
         token: localStorage.getItem("complexAppToken")
       });
-      addFlashMessages("Congrats, you sucessfully created post.");
+      ctx?.addFlashMessages("Congrats, you sucessfully created post.");
       // Redirect to new post url
       history.push(`/post/${response.data}`);
       console.log("new post was created");

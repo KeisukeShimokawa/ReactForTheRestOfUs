@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Axios from "axios";
+import { ExampleContext } from "./ExampleContext";
 
-type HeaderLoggedOutProps = {
-  setLoggedIn: (loggedin: boolean) => void;
-};
-
-const HeaderLoggedOut = ({ setLoggedIn }: HeaderLoggedOutProps) => {
+const HeaderLoggedOut = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const ctx = useContext(ExampleContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ const HeaderLoggedOut = ({ setLoggedIn }: HeaderLoggedOutProps) => {
         localStorage.setItem("complexAppUsername", response.data.username);
         localStorage.setItem("complexAppAvatar", response.data.avatar);
 
-        setLoggedIn(true);
+        ctx?.setLoggedIn(true);
       } else {
         console.log("incorrect username / password");
       }

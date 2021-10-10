@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 // My Components
@@ -11,6 +11,7 @@ import { Terms } from "./components/Terms";
 import CreatePost from "./components/CreatePost";
 import { ViewSinglePost } from "./components/ViewSinglePost";
 import { FlashMessages } from "./components/FlashMessages";
+import { ExampleContext } from "./components/ExampleContext";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -24,27 +25,29 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
-      <FlashMessages messages={flashMessages} />
-      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <Switch>
-        <Route path="/" exact>
-          {loggedIn ? <Home /> : <HomeGuest />}
-        </Route>
-        <Route path="/post/:id">
-          <ViewSinglePost />
-        </Route>
-        <Route path="/create-post">
-          <CreatePost addFlashMessages={addFlashMessages} />
-        </Route>
-        <Route path="/about-us" exact>
-          <About />
-        </Route>
-        <Route path="/terms" exact>
-          <Terms />
-        </Route>
-      </Switch>
-      <Footer />
-    </BrowserRouter>
+    <ExampleContext.Provider value={{ addFlashMessages, setLoggedIn }}>
+      <BrowserRouter>
+        <FlashMessages messages={flashMessages} />
+        <Header loggedIn={loggedIn} />
+        <Switch>
+          <Route path="/" exact>
+            {loggedIn ? <Home /> : <HomeGuest />}
+          </Route>
+          <Route path="/post/:id">
+            <ViewSinglePost />
+          </Route>
+          <Route path="/create-post">
+            <CreatePost />
+          </Route>
+          <Route path="/about-us" exact>
+            <About />
+          </Route>
+          <Route path="/terms" exact>
+            <Terms />
+          </Route>
+        </Switch>
+        <Footer />
+      </BrowserRouter>
+    </ExampleContext.Provider>
   );
 }

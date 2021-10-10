@@ -4,10 +4,9 @@ import { HeaderLoggedIn } from "./HeaderLoggedIn";
 
 type HeaderProps = {
   loggedIn: boolean;
-  setLoggedIn: (loggedIn: boolean) => void;
 };
 
-const Header = ({ loggedIn, setLoggedIn }: HeaderProps) => {
+const Header = ({ loggedIn }: HeaderProps) => {
   return (
     <header className="header-bar bg-primary mb-3">
       <div className="container d-flex flex-column flex-md-row align-items-center p-3">
@@ -16,11 +15,7 @@ const Header = ({ loggedIn, setLoggedIn }: HeaderProps) => {
             ComplexApp
           </Link>
         </h4>
-        {loggedIn ? (
-          <HeaderLoggedIn setLoggedIn={setLoggedIn} />
-        ) : (
-          <HeaderLoggedOut setLoggedIn={setLoggedIn} />
-        )}
+        {loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
       </div>
     </header>
   );
