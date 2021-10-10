@@ -4,10 +4,12 @@ import { withRouter } from "react-router-dom";
 import { Page } from "./Page";
 
 type CreatePostProps = {
+  // addFlashMessages: (msg: string) => void;
+  addFlashMessages: any;
   history: { push: (path: string) => void };
 };
 
-const CreatePost = ({ history }: CreatePostProps) => {
+const CreatePost = ({ addFlashMessages, history }: CreatePostProps) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
@@ -20,6 +22,7 @@ const CreatePost = ({ history }: CreatePostProps) => {
         body,
         token: localStorage.getItem("complexAppToken")
       });
+      addFlashMessages("Congrats, you sucessfully created post.");
       // Redirect to new post url
       history.push(`/post/${response.data}`);
       console.log("new post was created");
